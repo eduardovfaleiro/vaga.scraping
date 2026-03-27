@@ -14,7 +14,8 @@ def create_user(db: Session, user: schemas.UserCreate):
         title=user.title,
         bio=user.bio,
         skills=user.skills,
-        match_threshold=user.match_threshold
+        match_threshold=user.match_threshold,
+        phone=user.phone
     )
     db.add(db_user)
     db.commit()
