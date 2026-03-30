@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Text, Float, ForeignKey, DateTime, JSON
 from sqlalchemy.orm import relationship
 from database import Base
 import datetime
@@ -9,8 +9,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     title = Column(String)
-    bio = Column(Text)
-    skills = Column(Text)  # Comma separated or JSON string
+    skills = Column(JSON, default=list)
     match_threshold = Column(Float, default=70.0)
     phone = Column(String, nullable=True)
 

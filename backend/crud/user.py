@@ -12,7 +12,6 @@ def create_user(db: Session, user: schemas.UserCreate):
     db_user = models.User(
         name=user.name,
         title=user.title,
-        bio=user.bio,
         skills=user.skills,
         match_threshold=user.match_threshold,
         phone=user.phone
