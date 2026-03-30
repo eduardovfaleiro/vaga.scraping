@@ -1,7 +1,7 @@
 # Variáveis
 DOCKER_COMPOSE = docker compose
 
-.PHONY: help up down restart status logs build sync shell-backend shell-db clean
+.PHONY: help up down restart status logs build sync shell-backend shell-db clean setup-scripts issue migrate migrate-create
 
 help: ## Mostra esta ajuda
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -26,6 +26,12 @@ build: ## Reconstrói as imagens dos containers
 
 sync: ## Dispara a sincronização global de termos (via curl)
 	curl -X POST http://localhost:8000/sync-global
+
+migrate: ## Aplica todas as migrations pendentes
+	docker exec -it $$(docker ps -q -f name=backend) alembic upgrade head
+
+migrate-create: ## Cria uma nova migration (uso: make migrate-create MSG="descricao")
+	docker exec -it $$(docker ps -q -f name=backend) alembic revision --autogenerate -m "$(MSG)"
 
 shell-backend: ## Acessa o terminal do container backend
 	docker exec -it $$(docker ps -q -f name=backend) /bin/bash

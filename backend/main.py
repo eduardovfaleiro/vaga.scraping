@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
-import models
-from database import engine, get_db
+from database import get_db
 from crud.job import get_jobs
 import crud.recommendation as recommendation_crud
 import crud.user as user_crud
@@ -9,8 +8,6 @@ from services.matcher import process_new_jobs_for_user
 from services.sync import sync_all_global_terms
 import schemas
 from dotenv import load_dotenv
-
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Vaga Scraping API")
 load_dotenv()
