@@ -11,7 +11,11 @@ frontend/.next/
 frontend/.env*
 frontend/out/
 
+# Scripts
+scripts/.venv/
+
 # Diversos
+.env
 .DS_Store
 *.log
 
