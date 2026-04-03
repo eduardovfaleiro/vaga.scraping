@@ -54,7 +54,6 @@ services:
       - "8080:8080"
     depends_on:
       - redis_evolution
-      - db
 
 volumes:
   postgres_data:
