@@ -9,12 +9,12 @@ from services.sync import sync_all_global_terms
 import schemas
 from dotenv import load_dotenv
 
-app = FastAPI(title="Vaga Scraping API")
+app = FastAPI(title="Vaga Pipe API")
 load_dotenv()
 
 @app.get("/")
 async def root():
-    return {"message": "Vaga Scraping API is running"}
+    return {"message": "Vaga Pipe API is running"}
 
 @app.get("/health")
 async def health_check():
@@ -37,6 +37,13 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post("/sync-global")
 async def trigger_global_sync(background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    result = sync_all_global_terms(db, background_tasks)
+    return result
+
+@app.post("/sync-global/force")
+async def force_global_sync(background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    from crud.scrape_history import clear_scrape_history
+    clear_scrape_history(db)
     result = sync_all_global_terms(db, background_tasks)
     return result
 

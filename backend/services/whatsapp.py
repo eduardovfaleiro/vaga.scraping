@@ -4,23 +4,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-WHATSAPP_API_URL = os.getenv("WHATSAPP_API_URL")
-WHATSAPP_API_KEY = os.getenv("WHATSAPP_API_KEY")
-WHATSAPP_INSTANCE = os.getenv("WHATSAPP_INSTANCE")
+EVOLUTION_API_URL = os.getenv("EVOLUTION_API_URL")
+EVOLUTION_API_KEY = os.getenv("EVOLUTION_API_KEY")
+EVOLUTION_API_INSTANCE = os.getenv("EVOLUTION_API_INSTANCE")
 
 async def send_whatsapp_message(phone: str, message: str):
     """
     Envia uma mensagem via Evolution API.
     """
-    if not WHATSAPP_API_URL or not WHATSAPP_API_KEY or not WHATSAPP_INSTANCE:
+    if not EVOLUTION_API_URL or not EVOLUTION_API_KEY or not EVOLUTION_API_INSTANCE:
         print("[WHATSAPP] Credenciais não configuradas no .env. Ignorando envio.")
         return False
 
-    url = f"{WHATSAPP_API_URL}/message/sendText/{WHATSAPP_INSTANCE}"
-    
+    url = f"{EVOLUTION_API_URL}/message/sendText/{EVOLUTION_API_INSTANCE}"
+
     headers = {
         "Content-Type": "application/json",
-        "apikey": WHATSAPP_API_KEY
+        "apikey": EVOLUTION_API_KEY
     }
 
     payload = {

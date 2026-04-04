@@ -9,6 +9,10 @@ def get_recent_scrapes(db: Session, hours: int):
     threshold = datetime.datetime.utcnow() - datetime.timedelta(hours=hours)
     return db.query(models.ScrapeHistory).filter(models.ScrapeHistory.last_scraped >= threshold).all()
 
+def clear_scrape_history(db: Session):
+    db.query(models.ScrapeHistory).delete()
+    db.commit()
+
 def upsert_scrape_history(db: Session, term: str):
     history = get_scrape_history(db, term)
     if history:
