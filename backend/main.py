@@ -1,5 +1,8 @@
-from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks, Cookie, Response
+from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks, Cookie, Response, Request
 from fastapi.security import HTTPBearer
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 from sqlalchemy.orm import Session
 from typing import Optional
 from database import get_db
@@ -19,8 +22,12 @@ import schemas
 from schemas.auth import LoginRequest, TokenResponse
 from dotenv import load_dotenv
 
-app = FastAPI(title="Vaga Pipe API")
 load_dotenv()
+
+limiter = Limiter(key_func=get_remote_address, default_limits=["60/minute"])
+app = FastAPI(title="Vaga Pipe API")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 @app.get("/")
@@ -35,7 +42,8 @@ async def health_check():
 
 # Auth
 @app.post("/auth/login", response_model=TokenResponse)
-async def login(body: LoginRequest, response: Response, db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+async def login(request: Request, body: LoginRequest, response: Response, db: Session = Depends(get_db)):
     user = user_crud.get_user_by_email(db, body.email)
     if not user or not verify_password(body.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Credenciais inválidas")
