@@ -19,7 +19,6 @@ scripts/.venv/
 .DS_Store
 *.log
 
-*.md
 *.pyc
 *.pem
 
