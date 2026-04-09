@@ -32,6 +32,16 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
+def delete_user(db: Session, user_id: int) -> bool:
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        return False
+    db.query(models.Recommendation).filter(models.Recommendation.user_id == user_id).delete()
+    db.delete(user)
+    db.commit()
+    return True
+
+
 def update_user(db: Session, user_id: int, user_update: schemas.UserCreate):
     db_user = get_user(db, user_id)
     if db_user:

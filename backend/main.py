@@ -124,6 +124,19 @@ async def update_recommendation(
     return rec
 
 
+@app.delete("/users/{user_id}", status_code=204)
+async def delete_user(
+    user_id: int,
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Acesso negado")
+    deleted = user_crud.delete_user(db, user_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+
 @app.get("/jobs")
 async def list_jobs(current_user=Depends(get_current_user), db: Session = Depends(get_db)):
     return get_jobs(db)
