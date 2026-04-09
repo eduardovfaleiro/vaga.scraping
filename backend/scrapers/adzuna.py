@@ -2,6 +2,9 @@ from typing import List, Dict
 import httpx
 import os
 from scrapers.base import BaseScraper
+from logger import get_logger
+
+log = get_logger("adzuna")
 
 class AdzunaScraper(BaseScraper):
     def __init__(self):
@@ -17,7 +20,7 @@ class AdzunaScraper(BaseScraper):
         Busca vagas na Adzuna usando a API oficial.
         """
         if not self.app_id or not self.app_key:
-            print("--- ERRO: ADZUNA_APP_ID ou ADZUNA_APP_KEY não configurados nas variáveis de ambiente.")
+            log.error("ADZUNA_APP_ID ou ADZUNA_APP_KEY não configurados nas variáveis de ambiente.")
             return []
 
         params = {
@@ -47,5 +50,5 @@ class AdzunaScraper(BaseScraper):
                     })
                 return jobs
             except Exception as e:
-                print(f"Erro ao buscar na Adzuna: {e}")
+                log.exception("Erro ao buscar na Adzuna", extra={"search_term": search_term, "error": str(e)})
                 return []

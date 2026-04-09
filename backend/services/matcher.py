@@ -5,6 +5,9 @@ from crud.recommendation import create_recommendation
 from services.whatsapp import send_whatsapp_message
 from models import User
 from constants import DEFAULT_MATCH_THRESHOLD
+from logger import get_logger
+
+log = get_logger("matcher")
 
 
 def _score_job(skills: list[str], job_title: str, job_description: str) -> float:
@@ -51,7 +54,7 @@ async def process_new_jobs_for_user(db: Session, user: User, new_jobs: list):
 
         match_score = _score_job(skills, job.title, job.description)
 
-        print(f"[MATCHER] user={user.name} job='{job.title}' score={match_score} threshold={match_threshold}")
+        log.debug("Job scored", extra={"user": user.name, "job": job.title, "score": match_score, "threshold": match_threshold})
 
         if match_score >= match_threshold:
             create_recommendation(db, user_id=user.id, job_id=job.id, score=match_score)
@@ -66,7 +69,7 @@ async def process_new_jobs_for_user(db: Session, user: User, new_jobs: list):
                 )
                 await send_whatsapp_message(user.phone, message)
 
-                print(f"[MATCHER] Vaga '{job.title}' recomendada para '{user.name}' com score {match_score}%")
+                log.info("Vaga recomendada", extra={"user": user.name, "job": job.title, "score": match_score})
 
 
 async def process_new_jobs_for_users(db: Session, new_jobs: list):
