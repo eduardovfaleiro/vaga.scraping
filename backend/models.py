@@ -46,3 +46,14 @@ class ScrapeHistory(Base):
     id = Column(Integer, primary_key=True, index=True)
     term = Column(String, index=True, unique=True)
     last_scraped = Column(DateTime, default=datetime.datetime.utcnow)
+
+class NotificationOutbox(Base):
+    __tablename__ = "notification_outbox"
+
+    id = Column(Integer, primary_key=True, index=True)
+    phone = Column(String, nullable=False)
+    message = Column(Text, nullable=False)
+    status = Column(String, default="pending")  # pending, sent, failed
+    attempts = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    last_attempt_at = Column(DateTime, nullable=True)

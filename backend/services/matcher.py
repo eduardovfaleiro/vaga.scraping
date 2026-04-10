@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from thefuzz import fuzz
 from crud.user import get_users
 from crud.recommendation import create_recommendation
-from services.whatsapp import send_whatsapp_message
+from crud.outbox import create_outbox_entry
 from models import User
 from constants import DEFAULT_MATCH_THRESHOLD
 from logger import get_logger
@@ -57,9 +57,9 @@ async def process_new_jobs_for_user(db: Session, user: User, new_jobs: list):
         log.debug("Job scored", extra={"user": user.name, "job": job.title, "score": match_score, "threshold": match_threshold})
 
         if match_score >= match_threshold:
-            create_recommendation(db, user_id=user.id, job_id=job.id, score=match_score)
+            rec = create_recommendation(db, user_id=user.id, job_id=job.id, score=match_score)
 
-            if user.phone:
+            if rec is not None and user.phone:
                 message = (
                     f"🚀 *Nova vaga com Match!*\n\n"
                     f"*Título:* {job.title}\n"
@@ -67,8 +67,11 @@ async def process_new_jobs_for_user(db: Session, user: User, new_jobs: list):
                     f"*Score:* {match_score}%\n"
                     f"*Link:* {job.url}"
                 )
-                await send_whatsapp_message(user.phone, message)
+                create_outbox_entry(db, phone=user.phone, message=message)
 
+            db.commit()
+
+            if rec is not None:
                 log.info("Vaga recomendada", extra={"user": user.name, "job": job.title, "score": match_score})
 
 

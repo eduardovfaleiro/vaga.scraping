@@ -22,11 +22,18 @@ import schemas
 from schemas.auth import LoginRequest, TokenResponse
 from schemas.recommendation import RecommendationStatusUpdate
 from dotenv import load_dotenv
+import asyncio
+from services.outbox_worker import run_outbox_worker
 
 load_dotenv()
 
 limiter = Limiter(key_func=get_remote_address, default_limits=["60/minute"])
 app = FastAPI(title="Vaga Pipe API")
+
+
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(run_outbox_worker())
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 

@@ -18,8 +18,6 @@ def create_recommendation(db: Session, user_id: int, job_id: int, score: float):
         status="pending"
     )
     db.add(db_rec)
-    db.commit()
-    db.refresh(db_rec)
     return db_rec
 
 def get_user_recommendations(db: Session, user_id: int):
