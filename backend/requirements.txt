@@ -12,3 +12,5 @@ beautifulsoup4==4.14.3
 httpx==0.28.1
 thefuzz==0.22.1
 python-json-logger==3.3.0
+pytest==8.3.5
+pytest-asyncio==0.26.0

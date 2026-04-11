@@ -2,7 +2,8 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 
 import os                                                                                                                                                                         
-os.environ["DATABASE_URL"] = "sqlite:///:memory:" 
+from dotenv import load_dotenv
+load_dotenv(dotenv_path=".env.test")
 
 from database import Base
 from sqlalchemy.orm import sessionmaker
