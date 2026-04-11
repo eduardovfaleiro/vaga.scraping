@@ -82,7 +82,7 @@ async def logout(response: Response):
 
 
 # Users
-@app.post("/users", response_model=schemas.User)
+@app.post("/users", response_model=schemas.User, status_code=201)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if user_crud.get_user_by_email(db, user.email):
         raise HTTPException(status_code=400, detail="E-mail já cadastrado")
