@@ -16,6 +16,7 @@ scripts/.venv/
 
 # Diversos
 .env
+.env.test
 .DS_Store
 *.log
 
