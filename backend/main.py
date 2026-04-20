@@ -6,7 +6,7 @@ from slowapi.errors import RateLimitExceeded
 from dotenv import load_dotenv
 import asyncio
 from services.outbox_worker import run_outbox_worker
-from routers import auth, users, jobs, sync
+from routers import auth, users, sync
 
 load_dotenv()
 
@@ -26,7 +26,6 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(users.router)
-app.include_router(jobs.router)
 app.include_router(sync.router)
 
 

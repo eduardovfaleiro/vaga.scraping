@@ -65,9 +65,6 @@ export default function DashboardPage() {
       <nav className="bg-white border-b border-zinc-200 px-4 py-3 flex items-center justify-between">
         <span className="font-semibold text-zinc-900">Vagas</span>
         <div className="flex items-center gap-4 text-sm">
-          <Link href="/jobs" className="text-zinc-600 hover:text-zinc-900">
-            Todas as vagas
-          </Link>
           <Link href="/settings" className="text-zinc-600 hover:text-zinc-900">
             Configurações
           </Link>
