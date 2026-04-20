@@ -12,6 +12,25 @@ def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
 
+def get_user_by_google_id(db: Session, google_id: str):
+    return db.query(models.User).filter(models.User.google_id == google_id).first()
+
+
+def create_google_user(db: Session, google_id: str, email: str, name: str):
+    db_user = models.User(
+        name=name,
+        email=email,
+        google_id=google_id,
+        hashed_password=None,
+        title="",
+        skills=[],
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 

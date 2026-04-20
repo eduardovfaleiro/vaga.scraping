@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { apiFetch, extractError } from '@/lib/api';
 import { SkillsInput } from '@/components/SkillsInput';
+import GoogleLoginButton from '@/components/GoogleLoginButton';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -142,6 +143,12 @@ export default function RegisterPage() {
             {loading ? 'Criando conta...' : 'Criar conta'}
           </button>
         </form>
+        <div className="relative my-4 flex items-center">
+          <div className="flex-1 border-t border-zinc-200" />
+          <span className="mx-3 text-xs text-zinc-400">ou</span>
+          <div className="flex-1 border-t border-zinc-200" />
+        </div>
+        <GoogleLoginButton label="Criar conta com Google" />
         <div className="mt-4 text-sm text-zinc-600">
           <Link href="/login" className="hover:text-zinc-900 underline">
             Já tenho conta

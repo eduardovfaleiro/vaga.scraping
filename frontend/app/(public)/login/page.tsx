@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { apiFetch, extractError } from '@/lib/api';
 import { setToken } from '@/lib/auth';
+import GoogleLoginButton from '@/components/GoogleLoginButton';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -71,6 +72,12 @@ export default function LoginPage() {
             {loading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
+        <div className="relative my-4 flex items-center">
+          <div className="flex-1 border-t border-zinc-200" />
+          <span className="mx-3 text-xs text-zinc-400">ou</span>
+          <div className="flex-1 border-t border-zinc-200" />
+        </div>
+        <GoogleLoginButton />
         <div className="mt-4 flex flex-col gap-1 text-sm text-zinc-600">
           <Link href="/register" className="hover:text-zinc-900 underline">
             Criar conta

@@ -10,6 +10,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from database import get_db
 import models
+import httpx
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
@@ -106,6 +107,18 @@ def send_password_reset_email(email: str, token: str) -> None:
         smtp.starttls()
         smtp.login(SMTP_USER, SMTP_PASSWORD)
         smtp.sendmail(SMTP_FROM, [email], msg.as_string())
+
+
+def verify_google_token(access_token: str) -> dict:
+    resp = httpx.get(
+        "https://www.googleapis.com/oauth2/v3/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        timeout=10,
+    )
+    if resp.status_code != 200:
+        raise HTTPException(status_code=401, detail="Token Google inválido")
+    info = resp.json()
+    return {"google_id": info["sub"], "email": info["email"], "name": info.get("name", "")}
 
 
 def reset_user_password(db: Session, token: str, new_password: str) -> None:

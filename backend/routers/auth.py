@@ -7,12 +7,13 @@ from services.auth import (
     create_reset_token,
     reset_user_password,
     verify_password,
+    verify_google_token,
     create_access_token,
     create_refresh_token,
     refresh_access_token,
 )
 import crud.user as user_crud
-from schemas.auth import LoginRequest, TokenResponse, ForgotPasswordRequest, ResetPasswordRequest
+from schemas.auth import LoginRequest, TokenResponse, ForgotPasswordRequest, ResetPasswordRequest, GoogleAuthRequest
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
@@ -40,7 +41,7 @@ async def reset_password(body: ResetPasswordRequest, db: Session = Depends(get_d
 @limiter.limit("10/minute")
 async def login(request: Request, body: LoginRequest, response: Response, db: Session = Depends(get_db)):
     user = user_crud.get_user_by_email(db, body.email)
-    if not user or not verify_password(body.password, user.hashed_password):
+    if not user or not user.hashed_password or not verify_password(body.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Credenciais inválidas")
 
     access_token = create_access_token(user.id)
@@ -66,3 +67,29 @@ async def refresh(refresh_token: Optional[str] = Cookie(default=None)):
 async def logout(response: Response):
     response.delete_cookie("refresh_token")
     return {"message": "Logout realizado"}
+
+
+@router.post("/google", response_model=TokenResponse)
+async def google_auth(body: GoogleAuthRequest, response: Response, db: Session = Depends(get_db)):
+    info = verify_google_token(body.credential)
+
+    user = user_crud.get_user_by_google_id(db, info["google_id"])
+    if not user:
+        user = user_crud.get_user_by_email(db, info["email"])
+        if user:
+            user.google_id = info["google_id"]
+            db.commit()
+        else:
+            user = user_crud.create_google_user(db, info["google_id"], info["email"], info["name"])
+
+    access_token = create_access_token(user.id)
+    refresh_token = create_refresh_token(user.id)
+
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        samesite="lax",
+        max_age=60 * 60 * 24 * 30,
+    )
+    return {"access_token": access_token}
