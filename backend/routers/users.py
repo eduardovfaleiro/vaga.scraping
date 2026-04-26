@@ -4,7 +4,7 @@ from database import get_db
 from crud.job import get_jobs
 import crud.recommendation as recommendation_crud
 import crud.user as user_crud
-from services.matcher import process_new_jobs_for_user
+from services.matcher import process_new_jobs_for_user, process_user_against_existing_jobs
 from services.auth import get_current_user
 import schemas
 from schemas.recommendation import RecommendationStatusUpdate
@@ -17,8 +17,7 @@ async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if user_crud.get_user_by_email(db, user.email):
         raise HTTPException(status_code=400, detail="E-mail já cadastrado")
     created_user = user_crud.create_user(db, user)
-    jobs = get_jobs(db)
-    await process_new_jobs_for_user(db, created_user, jobs)
+    await process_user_against_existing_jobs(db, created_user)
     return created_user
 
 
@@ -42,6 +41,19 @@ async def get_recommendations(
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Acesso negado")
     return recommendation_crud.get_user_recommendations(db, user_id)
+
+
+@router.post("/re-match")
+async def trigger_re_match(
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Dispara manualmente o cruzamento do perfil do usuário logado 
+    com as vagas recentes armazenadas no banco de dados.
+    """
+    await process_user_against_existing_jobs(db, current_user)
+    return {"message": "Processamento de match iniciado para o seu perfil"}
 
 
 @router.patch("/{user_id}/recommendations/{recommendation_id}")
@@ -69,9 +81,17 @@ async def update_user(
 ):
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Acesso negado")
+    # Salva skills antigas para checar se mudaram
+    old_skills = current_user.skills
+    
     updated = user_crud.update_user(db, user_id, body)
     if not updated:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    
+    # Se as skills mudaram ou o threshold mudou, reprocessa as vagas existentes
+    if updated.skills != old_skills or body.match_threshold is not None:
+        await process_user_against_existing_jobs(db, updated)
+        
     return updated
 
 

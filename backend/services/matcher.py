@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from thefuzz import fuzz
 from crud.user import get_users
+from crud.job import get_jobs
 from crud.recommendation import create_recommendation
 from crud.outbox import create_outbox_entry
 from models import User
@@ -61,7 +62,7 @@ async def process_new_jobs_for_user(db: Session, user: User, new_jobs: list):
 
             if rec is not None and user.phone:
                 message = (
-                    f"🚀 *Nova vaga com Match!*\n\n"
+                    f"Nova vaga com Match:*\n\n"
                     f"*Título:* {job.title}\n"
                     f"*Empresa:* {job.company or 'Não informada'}\n"
                     f"*Score:* {match_score}%\n"
@@ -83,3 +84,18 @@ async def process_new_jobs_for_users(db: Session, new_jobs: list):
 
     for user in users:
         await process_new_jobs_for_user(db, user, new_jobs)
+
+
+async def process_user_against_existing_jobs(db: Session, user: User, limit: int = 100):
+    """
+    Cruza um usuário específico com as vagas já cadastradas no banco.
+    Útil para novos usuários ou quando um usuário atualiza suas skills.
+    """
+    if not user.skills:
+        return
+
+    log.info("Processando usuário contra vagas existentes", extra={"user": user.name, "user_id": user.id})
+
+    jobs = get_jobs(db, skip=0, limit=limit, only_recent=True)
+    
+    await process_new_jobs_for_user(db, user, jobs)

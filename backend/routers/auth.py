@@ -14,6 +14,7 @@ from services.auth import (
     refresh_access_token,
 )
 import crud.user as user_crud
+from services.matcher import process_user_against_existing_jobs
 from schemas.auth import LoginRequest, TokenResponse, ForgotPasswordRequest, ResetPasswordRequest, GoogleAuthRequest, GithubAuthRequest
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -82,6 +83,7 @@ async def github_auth(body: GithubAuthRequest, response: Response, db: Session =
             db.commit()
         else:
             user = user_crud.create_github_user(db, info["github_id"], info["email"], info["name"])
+            await process_user_against_existing_jobs(db, user)
 
     access_token = create_access_token(user.id)
     refresh_token = create_refresh_token(user.id)
@@ -108,6 +110,7 @@ async def google_auth(body: GoogleAuthRequest, response: Response, db: Session =
             db.commit()
         else:
             user = user_crud.create_google_user(db, info["google_id"], info["email"], info["name"])
+            await process_user_against_existing_jobs(db, user)
 
     access_token = create_access_token(user.id)
     refresh_token = create_refresh_token(user.id)
