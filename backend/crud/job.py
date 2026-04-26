@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from datetime import datetime, timedelta
 import models
 
 def create_job(db: Session, job_data: dict) -> tuple:
@@ -12,5 +13,11 @@ def create_job(db: Session, job_data: dict) -> tuple:
     db.refresh(db_job)
     return db_job, True
 
-def get_jobs(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Job).offset(skip).limit(limit).all()
+def get_jobs(db: Session, skip: int = 0, limit: int = 100, only_recent: bool = True):
+    query = db.query(models.Job)
+    
+    if only_recent:
+        one_week_ago = datetime.utcnow() - timedelta(days=7)
+        query = query.filter(models.Job.posted_at >= one_week_ago)
+        
+    return query.order_by(models.Job.posted_at.desc()).offset(skip).limit(limit).all()
