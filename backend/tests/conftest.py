@@ -26,8 +26,9 @@ VALID_PASSWORD = "Senha123!"
 def reset_rate_limiter():
     """Limpa o storage do rate limiter antes de cada teste para evitar
     que chamadas acumuladas entre testes disparem o limite."""
-    from main import limiter
+    from limiter import limiter
     limiter._storage.reset()
+
     yield
 
 

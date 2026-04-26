@@ -16,10 +16,8 @@ from services.auth import (
 import crud.user as user_crud
 from services.matcher import process_user_against_existing_jobs
 from schemas.auth import LoginRequest, TokenResponse, ForgotPasswordRequest, ResetPasswordRequest, GoogleAuthRequest, GithubAuthRequest
-from slowapi import Limiter
-from slowapi.util import get_remote_address
+from limiter import limiter
 
-limiter = Limiter(key_func=get_remote_address)
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
