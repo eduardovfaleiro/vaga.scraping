@@ -61,36 +61,53 @@ export default function DashboardPage() {
     }
   }
 
+  const counts = {
+    pending: recs.filter((r) => r.status === 'pending').length,
+    applied: recs.filter((r) => r.status === 'applied').length,
+    rejected: recs.filter((r) => r.status === 'rejected').length,
+  };
+
   const filtered = recs.filter((r) => r.status === tab);
 
   return (
     <div className="min-h-screen bg-zinc-50">
-      <nav className="bg-white border-b border-zinc-200 px-4 py-3 flex items-center justify-between">
-        <span className="font-semibold text-zinc-900">Vagas</span>
-        <div className="flex items-center gap-4 text-sm">
-          <Link href="/settings" className="text-zinc-600 hover:text-zinc-900">
-            Configurações
-          </Link>
-          <button onClick={logout} className="text-zinc-600 hover:text-zinc-900">
-            Sair
-          </button>
+      <nav className="bg-white border-b border-zinc-200 py-3">
+        <div className="max-w-2xl mx-auto px-4 flex items-center justify-between">
+          <span className="font-semibold text-zinc-900">Vagazap</span>
+          <div className="flex items-center gap-4 text-sm">
+            <Link href="/resume" className="text-zinc-600 hover:text-zinc-900">
+              Meu currículo
+            </Link>
+            <Link href="/settings" className="text-zinc-600 hover:text-zinc-900">
+              Configurações
+            </Link>
+            <button onClick={logout} className="text-zinc-600 hover:text-zinc-900">
+              Sair
+            </button>
+          </div>
         </div>
       </nav>
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         <h1 className="text-xl font-semibold text-zinc-900 mb-6">Recomendações</h1>
 
-        <div className="flex gap-1 border-b border-zinc-200 mb-6">
+        <div className="flex border-b border-zinc-200 mb-6">
           {TABS.map(({ label, value }) => (
             <button
               key={value}
               onClick={() => setTab(value)}
-              className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${tab === value
+              className={`flex-1 px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors flex items-center justify-center gap-2 ${tab === value
                 ? 'border-zinc-900 text-zinc-900'
                 : 'border-transparent text-zinc-500 hover:text-zinc-700'
                 }`}
             >
               {label}
+              <span className={`px-1.5 py-0.5 text-[10px] rounded-full transition-colors ${tab === value
+                ? 'bg-zinc-900 text-white'
+                : 'bg-zinc-100 text-zinc-500 group-hover:bg-zinc-200'
+                }`}>
+                {counts[value]}
+              </span>
             </button>
           ))}
         </div>
@@ -107,11 +124,11 @@ export default function DashboardPage() {
               <RecommendationCard
                 key={rec.id}
                 id={rec.id}
-                title={rec.job.title}
-                company={rec.job.company}
-                location={rec.job.location}
-                date={rec.job.posted_at}
-                url={rec.job.url}
+                title={rec.job?.title || 'Vaga indisponível'}
+                company={rec.job?.company || '-'}
+                location={rec.job?.location || '-'}
+                date={rec.job?.posted_at || ''}
+                url={rec.job?.url || '#'}
                 status={rec.status}
                 onApply={(id) => updateStatus(id, 'applied')}
                 onReject={(id) => updateStatus(id, 'rejected')} />

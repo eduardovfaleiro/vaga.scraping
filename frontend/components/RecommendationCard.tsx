@@ -46,13 +46,13 @@ export function RecommendationCard({
         <div className="flex gap-2 pt-1">
           <button
             onClick={() => onApply?.(id)}
-            className="flex-1 text-sm bg-zinc-900 text-white py-1.5 rounded hover:bg-zinc-700 transition-colors"
+            className="flex-1 text-sm bg-zinc-900 text-white py-1.5 rounded hover:bg-zinc-700 transition-colors cursor-pointer"
           >
             Aplicar
           </button>
           <button
             onClick={() => onReject?.(id)}
-            className="flex-1 text-sm bg-white text-zinc-900 border border-zinc-900 py-1.5 rounded hover:bg-zinc-100 transition-colors"
+            className="flex-1 text-sm bg-white text-zinc-900 border border-zinc-900 py-1.5 rounded hover:bg-zinc-100 transition-colors cursor-pointer"
           >
             Rejeitar
           </button>

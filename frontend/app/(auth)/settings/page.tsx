@@ -124,16 +124,21 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-zinc-50">
-      <nav className="bg-white border-b border-zinc-200 px-4 py-3 flex items-center justify-between">
-        <span className="font-semibold text-zinc-900">Vagas</span>
-        <div className="flex items-center gap-4 text-sm">
-          <Link href="/dashboard" className="text-zinc-600 hover:text-zinc-900">
-            Recomendações
-          </Link>
+      <nav className="bg-white border-b border-zinc-200 py-3">
+        <div className="max-w-2xl mx-auto px-4 flex items-center justify-between">
+          <span className="font-semibold text-zinc-900">Vagazap</span>
+          <div className="flex items-center gap-4 text-sm">
+            <Link href="/dashboard" className="text-zinc-600 hover:text-zinc-900">
+              Recomendações
+            </Link>
+            <Link href="/resume" className="text-zinc-600 hover:text-zinc-900">
+              Meu currículo
+            </Link>
+          </div>
         </div>
       </nav>
 
-      <main className="max-w-lg mx-auto px-4 py-8">
+      <main className="max-w-2xl mx-auto px-4 py-8">
         <h1 className="text-xl font-semibold text-zinc-900 mb-6">Configurações</h1>
 
         {loading && <p className="text-sm text-zinc-500">Carregando...</p>}
