@@ -123,7 +123,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen">
       <nav className="bg-white border-b border-zinc-200 py-3">
         <div className="max-w-2xl mx-auto px-4 flex items-center justify-between">
           <span className="font-semibold text-zinc-900">Vagazap</span>

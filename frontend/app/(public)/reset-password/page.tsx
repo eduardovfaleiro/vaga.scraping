@@ -44,7 +44,7 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50 px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-semibold text-zinc-900 mb-6">Nova senha</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

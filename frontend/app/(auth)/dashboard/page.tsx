@@ -5,6 +5,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { fetchWithAuth } from '@/lib/api';
 import { RecommendationCard } from '@/components/RecommendationCard';
 import Link from 'next/link';
+import Image from 'next/image';
+import endGif from '@/assets/end.gif';
 
 type Status = 'pending' | 'applied' | 'rejected';
 
@@ -70,7 +72,7 @@ export default function DashboardPage() {
   const filtered = recs.filter((r) => r.status === tab);
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen">
       <nav className="bg-white border-b border-zinc-200 py-3">
         <div className="max-w-2xl mx-auto px-4 flex items-center justify-between">
           <span className="font-semibold text-zinc-900">Vagazap</span>
@@ -134,6 +136,11 @@ export default function DashboardPage() {
                 onReject={(id) => updateStatus(id, 'rejected')} />
             );
           })}
+          {!loading && !error && filtered.length > 0 && (
+            <div className="flex justify-center mt-6 pb-6">
+              <Image src={endGif} alt="Fim da lista" width={800} height={100} unoptimized />
+            </div>
+          )}
         </div>
       </main>
     </div>

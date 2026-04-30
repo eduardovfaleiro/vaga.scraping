@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className="h-full">
-      <body className="min-h-full bg-white text-zinc-900">
+      <body className="min-h-full text-zinc-900">
         <GoogleOAuthWrapper>{children}</GoogleOAuthWrapper>
       </body>
     </html>

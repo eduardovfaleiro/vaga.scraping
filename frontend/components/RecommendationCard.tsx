@@ -40,7 +40,7 @@ export function RecommendationCard({
       <div className="flex items-center gap-3 text-xs text-zinc-500">
         <span>{location}</span>
         <span>·</span>
-        <span>{new Date(date).toLocaleDateString('pt-BR')}</span>
+        <span>{date ? new Date(date).toLocaleDateString('pt-BR') : 'Data não informada'}</span>
       </div>
       {status === 'pending' && (
         <div className="flex gap-2 pt-1">
