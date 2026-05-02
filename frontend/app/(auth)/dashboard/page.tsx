@@ -93,20 +93,20 @@ export default function DashboardPage() {
       <main className="max-w-2xl mx-auto px-4 py-8">
         <h1 className="text-xl font-semibold text-zinc-900 mb-6">Recomendações</h1>
 
-        <div className="flex border-b border-zinc-200 mb-6">
+        <div className="flex bg-card border border-zinc-200 mb-6 rounded-md overflow-hidden p-1 gap-1">
           {TABS.map(({ label, value }) => (
             <button
               key={value}
               onClick={() => setTab(value)}
-              className={`flex-1 px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors flex items-center justify-center gap-2 ${tab === value
-                ? 'border-zinc-900 text-zinc-900'
-                : 'border-transparent text-zinc-500 hover:text-zinc-700'
+              className={`flex-1 px-4 py-2 text-sm font-medium rounded transition-colors flex items-center justify-center gap-2 ${tab === value
+                ? 'bg-zinc-100 text-zinc-900 shadow-sm'
+                : 'text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50/50'
                 }`}
             >
               {label}
               <span className={`px-1.5 py-0.5 text-[10px] rounded-full transition-colors ${tab === value
                 ? 'bg-zinc-900 text-white'
-                : 'bg-zinc-100 text-zinc-500 group-hover:bg-zinc-200'
+                : 'bg-zinc-200 text-zinc-600'
                 }`}>
                 {counts[value]}
               </span>

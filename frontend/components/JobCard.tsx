@@ -10,7 +10,7 @@ interface JobCardProps {
 
 export function JobCard({ title, company, location, date, url }: JobCardProps) {
   return (
-    <div className="border border-zinc-200 rounded-md p-4 flex flex-col gap-2">
+    <div className="bg-card text-card-foreground border border-zinc-200 rounded-md p-4 flex flex-col gap-2">
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold text-zinc-900 leading-snug">{title}</h3>
         <a
