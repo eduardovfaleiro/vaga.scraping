@@ -27,3 +27,4 @@ scripts/.venv/
 *.zip
 .venv
 *.md
+agents/
