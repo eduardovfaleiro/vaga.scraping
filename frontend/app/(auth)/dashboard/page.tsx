@@ -136,11 +136,6 @@ export default function DashboardPage() {
                 onReject={(id) => updateStatus(id, 'rejected')} />
             );
           })}
-          {!loading && !error && filtered.length > 0 && (
-            <div className="flex justify-center mt-6 pb-6">
-              <Image src={endGif} alt="Fim da lista" width={800} height={100} unoptimized />
-            </div>
-          )}
         </div>
       </main>
     </div>
