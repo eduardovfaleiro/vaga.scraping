@@ -20,7 +20,7 @@ export default function GithubCallbackPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <p className="text-sm text-zinc-500">Autenticando com GitHub...</p>
+      <p className="text-sm text-secondary">Autenticando com GitHub...</p>
     </div>
   );
 }

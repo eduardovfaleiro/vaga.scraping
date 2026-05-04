@@ -1,5 +1,8 @@
 'use client';
 
+import { Card } from './Card';
+import { Button } from './Button';
+
 interface RecommendationCardProps {
   id: string;
   title: string;
@@ -24,45 +27,48 @@ export function RecommendationCard({
   onReject,
 }: RecommendationCardProps) {
   return (
-    <div className="bg-card text-card-foreground border border-zinc-200 rounded-md p-4 flex flex-col gap-3">
+    <Card className="flex flex-col gap-3">
       <div className="flex items-start justify-between gap-2">
-        <h3 className="font-semibold text-zinc-900 leading-snug">{title}</h3>
+        <h3 className="font-semibold text-primary leading-snug">{title}</h3>
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 text-xs bg-zinc-900 text-white px-3 py-1 rounded hover:bg-zinc-700 transition-colors"
+          className="shrink-0 text-xs bg-brand-primary text-white px-3 py-1 rounded-md hover:bg-brand-primary-hover transition-colors"
         >
           Ver vaga
         </a>
       </div>
-      <p className="text-sm text-zinc-600">{company}</p>
-      <div className="flex items-center gap-3 text-xs text-zinc-500">
+      <p className="text-sm text-secondary">{company}</p>
+      <div className="flex items-center gap-3 text-xs text-secondary">
         <span>{location}</span>
         <span>·</span>
         <span>{date ? new Date(date).toLocaleDateString('pt-BR') : 'Data não informada'}</span>
       </div>
       {status === 'pending' && (
         <div className="flex gap-2 pt-1">
-          <button
+          <Button
             onClick={() => onApply?.(id)}
-            className="flex-1 text-sm bg-zinc-900 text-white py-1.5 rounded hover:bg-zinc-700 transition-colors cursor-pointer"
+            className="flex-1 !py-1.5"
           >
             Aplicar
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => onReject?.(id)}
-            className="flex-1 text-sm bg-white text-zinc-900 border border-zinc-900 py-1.5 rounded hover:bg-zinc-100 transition-colors cursor-pointer"
+            variant="outline"
+            className="flex-1 !py-1.5"
           >
             Ignorar
-          </button>
+          </Button>
         </div>
       )}
       {status !== 'pending' && (
-        <span className="self-start text-xs bg-zinc-100 text-zinc-700 px-2 py-0.5 rounded">
+        <span className={`self-start text-xs px-2 py-0.5 rounded-md ${
+          status === 'applied' ? 'bg-status-info text-status-info-text' : 'bg-hover text-secondary'
+        }`}>
           {status === 'applied' ? 'Aplicada' : 'Ignorada'}
         </span>
       )}
-    </div>
+    </Card>
   );
 }

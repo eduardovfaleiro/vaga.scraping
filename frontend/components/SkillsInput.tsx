@@ -32,17 +32,17 @@ export function SkillsInput({ skills, onChange }: SkillsInputProps) {
   }
 
   return (
-    <div className="border border-zinc-300 rounded-md p-2 flex flex-wrap gap-1.5 focus-within:border-zinc-900 transition-colors">
+    <div className="border border-border-subtle rounded-md p-2.5 flex flex-wrap gap-1.5 focus-within:border-brand-primary focus-within:ring-1 focus-within:ring-brand-primary transition-colors bg-background">
       {skills.map((skill) => (
         <span
           key={skill}
-          className="flex items-center gap-1 bg-zinc-100 text-zinc-700 text-sm px-2 py-0.5 rounded"
+          className="flex items-center gap-1.5 bg-hover text-primary text-sm px-2.5 py-1 rounded-md border border-border-subtle font-medium"
         >
           {skill}
           <button
             type="button"
             onClick={() => removeSkill(skill)}
-            className="text-zinc-400 hover:text-zinc-700 leading-none"
+            className="text-secondary hover:text-primary leading-none transition-colors cursor-pointer"
           >
             ×
           </button>
@@ -55,7 +55,7 @@ export function SkillsInput({ skills, onChange }: SkillsInputProps) {
         onKeyDown={handleKeyDown}
         onBlur={() => addSkill(input)}
         placeholder={skills.length === 0 ? 'Ex: Python, React (Enter ou vírgula)' : ''}
-        className="flex-1 min-w-[120px] outline-none text-sm bg-transparent text-zinc-900 placeholder:text-zinc-400"
+        className="flex-1 min-w-[150px] outline-none text-sm bg-transparent text-primary placeholder:text-secondary"
       />
     </div>
   );

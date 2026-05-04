@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { apiFetch } from '@/lib/api';
+import { Card } from '@/components/Card';
+import { Button } from '@/components/Button';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -24,43 +26,45 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-semibold text-zinc-900 mb-6">Recuperar senha</h1>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-background">
+      <Card className="w-full max-w-sm !p-8">
+        <h1 className="text-display-lg font-bold text-primary tracking-tight mb-8 text-center">Recuperar senha</h1>
         {sent ? (
-          <div className="flex flex-col gap-4">
-            <p className="text-sm text-zinc-700">
+          <div className="flex flex-col gap-6 text-center">
+            <p className="text-sm text-secondary">
               Se esse e-mail estiver cadastrado, você receberá as instruções em breve.
             </p>
-            <Link href="/login" className="text-sm underline text-zinc-600 hover:text-zinc-900">
+            <Link href="/login" className="text-sm text-brand-action hover:underline font-medium">
               Voltar ao login
             </Link>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-zinc-700">E-mail</label>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-secondary uppercase tracking-wider">E-mail</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border border-zinc-300 rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-900 transition-colors"
+                className="border border-border-subtle rounded-md px-4 py-2.5 text-sm outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors bg-background"
               />
             </div>
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="bg-zinc-900 text-white py-2 rounded-md text-sm font-medium hover:bg-zinc-700 disabled:opacity-50 transition-colors"
+              className="w-full !py-3"
             >
               {loading ? 'Enviando...' : 'Enviar instruções'}
-            </button>
-            <Link href="/login" className="text-sm underline text-zinc-600 hover:text-zinc-900">
-              Voltar ao login
-            </Link>
+            </Button>
+            <div className="text-center mt-4">
+              <Link href="/login" className="text-sm text-brand-action hover:underline font-medium">
+                Voltar ao login
+              </Link>
+            </div>
           </form>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

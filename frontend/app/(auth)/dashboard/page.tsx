@@ -98,95 +98,76 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <nav className="bg-white border-b border-zinc-200 py-3">
-        <div className="max-w-2xl mx-auto px-4 flex items-center justify-between">
-          <span className="font-semibold text-zinc-900">Vagazap</span>
-          <div className="flex items-center gap-4 text-sm">
-            {/* <Link href="/resume" className="text-zinc-600 hover:text-zinc-900">
-              Meu currículo
-            </Link> */}
-            <Link href="/settings" className="text-zinc-600 hover:text-zinc-900">
-              Configurações
-            </Link>
-            <button onClick={logout} className="text-zinc-600 hover:text-zinc-900">
-              Sair
-            </button>
-          </div>
-        </div>
-      </nav>
+    <>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-display-lg font-bold text-primary tracking-tight">Recomendações</h1>
 
-      <main className="max-w-2xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-semibold text-zinc-900">Recomendações</h1>
+        {tab === 'pending' && (
+          <select
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+            className="text-sm border border-border-subtle rounded-md px-3 py-1.5 bg-surface text-secondary focus:outline-none focus:ring-1 focus:ring-brand-primary transition-colors"
+          >
+            <option value="all">Todas</option>
+            <option value="24h">Últimas 24h</option>
+            <option value="week">Última semana</option>
+            <option value="month">Último mês</option>
+          </select>
+        )}
+      </div>
 
-          {tab === 'pending' && (
-            <select
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-              className="text-sm border border-zinc-200 rounded-md px-2 py-1 bg-white text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-400"
-            >
-              <option value="all">Todas</option>
-              <option value="24h">Últimas 24h</option>
-              <option value="week">Última semana</option>
-              <option value="month">Último mês</option>
-            </select>
-          )}
-        </div>
-
-        <div className="flex bg-card border-b border-zinc-200 mb-6 ">
-          {TABS.map(({ label, value }) => (
-            <button
-              key={value}
-              onClick={() => setTab(value)}
-              className={`flex-1 px-4 py-2 text-sm font-medium transition-colors flex items-center justify-center gap-2 relative ${
-                tab === value
-                  ? 'text-zinc-900 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-zinc-900' // Underline for active tab
-                  : 'text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50/50'
+      <div className="flex bg-surface border border-border-subtle rounded-lg overflow-hidden mb-8 shadow-sm">
+        {TABS.map(({ label, value }) => (
+          <button
+            key={value}
+            onClick={() => setTab(value)}
+            className={`flex-1 px-4 py-3 text-sm font-medium transition-colors flex items-center justify-center gap-2 relative cursor-pointer ${
+              tab === value
+                ? 'text-primary bg-hover' 
+                : 'text-secondary hover:text-primary hover:bg-hover'
+            }`}
+          >
+            {label}
+            <span
+              className={`px-1.5 py-0.5 text-[10px] rounded-full transition-colors ${
+                tab === value ? 'bg-brand-primary text-white' : 'bg-border-subtle text-secondary'
               }`}
             >
-              {label}
-              <span
-                className={`px-1.5 py-0.5 text-[10px] rounded-full transition-colors ${
-                  tab === value ? 'bg-zinc-900 text-white' : 'bg-zinc-200 text-zinc-600'
-                }`}
-              >
-                {counts[value]}
-              </span>
-            </button>
-          ))}
-        </div>
+              {counts[value]}
+            </span>
+            {tab === value && (
+              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-primary" />
+            )}
+          </button>
+        ))}
+      </div>
 
-        {tab === 'rejected' && (
-          <p className="text-xs text-zinc-500 text-center mb-4">
-            Vagas ignoradas são excluídas permanentemente após 7 dias.
-          </p>
-        )}
+      {tab === 'rejected' && (
+        <p className="text-xs text-secondary text-center mb-6">
+          Vagas ignoradas são excluídas permanentemente após 7 dias.
+        </p>
+      )}
 
-        {loading && <p className="text-sm text-zinc-500">Carregando...</p>}
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        {!loading && !error && filtered.length === 0 && (
-          <p className="text-sm text-zinc-500">Nenhuma vaga nesta categoria.</p>
-        )}
-        <div className="flex flex-col gap-3">
-          {filtered.map((rec) => {
-
-            return (
-              <RecommendationCard
-                key={rec.id}
-                id={rec.id}
-                title={rec.job?.title || 'Vaga indisponível'}
-                company={rec.job?.company || '-'}
-                location={rec.job?.location || '-'}
-                date={rec.job?.posted_at || ''}
-                url={rec.job?.url || '#'}
-                status={rec.status}
-                onApply={(id) => updateStatus(id, 'applied')}
-                onReject={(id) => updateStatus(id, 'rejected')} />
-            );
-          })}
-        </div>
-      </main>
-    </div>
+      {loading && <p className="text-sm text-secondary">Carregando...</p>}
+      {error && <p className="text-sm text-status-hot">{error}</p>}
+      {!loading && !error && filtered.length === 0 && (
+        <p className="text-sm text-secondary">Nenhuma vaga nesta categoria.</p>
+      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {filtered.map((rec) => (
+          <RecommendationCard
+            key={rec.id}
+            id={rec.id}
+            title={rec.job?.title || 'Vaga indisponível'}
+            company={rec.job?.company || '-'}
+            location={rec.job?.location || '-'}
+            date={rec.job?.posted_at || ''}
+            url={rec.job?.url || '#'}
+            status={rec.status}
+            onApply={(id) => updateStatus(id, 'applied')}
+            onReject={(id) => updateStatus(id, 'rejected')} />
+        ))}
+      </div>
+    </>
   );
 }

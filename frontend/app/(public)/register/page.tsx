@@ -8,6 +8,9 @@ import { SkillsInput } from '@/components/SkillsInput';
 import GoogleLoginButton from '@/components/GoogleLoginButton';
 import GithubLoginButton from '@/components/GithubLoginButton';
 
+import { Card } from '@/components/Card';
+import { Button } from '@/components/Button';
+
 export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({
@@ -63,67 +66,67 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-semibold text-zinc-900 mb-6">Criar conta</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-zinc-700">Nome</label>
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
+      <Card className="w-full max-w-sm !p-8">
+        <h1 className="text-display-lg font-bold text-primary tracking-tight mb-8 text-center">Criar conta</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Nome</label>
             <input
               type="text"
               value={form.name}
               onChange={(e) => setField('name', e.target.value)}
               required
-              className="border border-zinc-300 rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-900 transition-colors"
+              className="border border-border-subtle rounded-md px-4 py-2.5 text-sm outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors bg-background"
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-zinc-700">E-mail</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-secondary uppercase tracking-wider">E-mail</label>
             <input
               type="email"
               value={form.email}
               onChange={(e) => setField('email', e.target.value)}
               required
-              className="border border-zinc-300 rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-900 transition-colors"
+              className="border border-border-subtle rounded-md px-4 py-2.5 text-sm outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors bg-background"
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-zinc-700">Senha</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Senha</label>
             <input
               type="password"
               value={form.password}
               onChange={(e) => setField('password', e.target.value)}
               required
-              className="border border-zinc-300 rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-900 transition-colors"
+              className="border border-border-subtle rounded-md px-4 py-2.5 text-sm outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors bg-background"
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-zinc-700">Cargo atual</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Cargo atual</label>
             <input
               type="text"
               value={form.title}
               onChange={(e) => setField('title', e.target.value)}
               required
               placeholder="Ex: Desenvolvedor Backend"
-              className="border border-zinc-300 rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-900 transition-colors"
+              className="border border-border-subtle rounded-md px-4 py-2.5 text-sm outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors bg-background"
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-zinc-700">Skills</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Skills</label>
             <SkillsInput skills={skills} onChange={setSkills} />
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-zinc-700">Telefone (opcional)</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Telefone (opcional)</label>
             <input
               type="tel"
               value={form.phone}
               onChange={(e) => setField('phone', e.target.value)}
               placeholder="(11) 99999-9999"
-              className="border border-zinc-300 rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-900 transition-colors"
+              className="border border-border-subtle rounded-md px-4 py-2.5 text-sm outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors bg-background"
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-zinc-700">
+          <div className="flex flex-col gap-2.5">
+            <label className="text-xs font-semibold text-secondary uppercase tracking-wider">
               Match mínimo: {form.match_threshold}%
             </label>
             <input
@@ -133,33 +136,33 @@ export default function RegisterPage() {
               step="1"
               value={form.match_threshold}
               onChange={(e) => setField('match_threshold', Number(e.target.value))}
-              className="accent-zinc-900"
+              className="accent-brand-primary cursor-pointer"
             />
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <button
+          {error && <p className="text-sm text-status-hot font-medium">{error}</p>}
+          <Button
             type="submit"
             disabled={loading}
-            className="bg-zinc-900 text-white py-2 rounded-md text-sm font-medium hover:bg-zinc-700 disabled:opacity-50 transition-colors"
+            className="w-full !py-3 mt-2"
           >
             {loading ? 'Criando conta...' : 'Criar conta'}
-          </button>
+          </Button>
         </form>
-        <div className="relative my-4 flex items-center">
-          <div className="flex-1 border-t border-zinc-200" />
-          <span className="mx-3 text-xs text-zinc-400">ou</span>
-          <div className="flex-1 border-t border-zinc-200" />
+        <div className="relative my-6 flex items-center">
+          <div className="flex-1 border-t border-border-subtle" />
+          <span className="mx-3 text-[10px] font-bold text-secondary uppercase tracking-widest">ou</span>
+          <div className="flex-1 border-t border-border-subtle" />
         </div>
-        <GoogleLoginButton label="Criar conta com Google" />
-        <div className="mt-2">
+        <div className="flex flex-col gap-3">
+          <GoogleLoginButton label="Criar conta com Google" />
           <GithubLoginButton label="Criar conta com GitHub" />
         </div>
-        <div className="mt-4 text-sm text-zinc-600">
-          <Link href="/login" className="hover:text-zinc-900 underline">
-            Já tenho conta
+        <div className="mt-8 text-sm text-center">
+          <Link href="/login" className="text-brand-action hover:underline font-medium">
+            Já tem uma conta? Entrar
           </Link>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

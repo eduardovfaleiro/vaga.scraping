@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import Link from 'next/link';
+import { Card } from '@/components/Card';
 
 export default function ResumePage() {
-  const { logout } = useAuth();
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -29,60 +27,57 @@ export default function ResumePage() {
   };
 
   return (
-    <div className="min-h-screen">
-      <nav className="bg-white border-b border-zinc-200 py-3">
-        <div className="max-w-2xl mx-auto px-4 flex items-center justify-between">
-          <span className="font-semibold text-zinc-900">Vagazap</span>
-          <div className="flex items-center gap-4 text-sm">
-            <Link href="/dashboard" className="text-zinc-600 hover:text-zinc-900">
-              Recomendações
-            </Link>
-            <Link href="/settings" className="text-zinc-600 hover:text-zinc-900">
-              Configurações
-            </Link>
-            <button onClick={logout} className="text-zinc-600 hover:text-zinc-900">
-              Sair
-            </button>
-          </div>
-        </div>
-      </nav>
+    <>
+      <h1 className="text-display-lg font-bold text-primary tracking-tight mb-8">Meu currículo</h1>
 
-      <main className="max-w-2xl mx-auto px-4 py-8">
-        <h1 className="text-xl font-semibold text-zinc-900 mb-6">Meu currículo</h1>
+      <Card className="flex flex-col items-start gap-6">
+        <p className="text-sm text-secondary">
+          Faça o upload do seu currículo em PDF para que possamos extrair suas habilidades e melhorar as recomendações de vagas.
+        </p>
 
-        <div className="flex flex-col items-start gap-4">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col items-start gap-4 w-full">
+          <label className="flex items-center gap-3 px-4 py-3 border border-dashed border-border-subtle rounded-lg w-full cursor-pointer hover:bg-hover transition-colors group">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
+              width="24"
+              height="24"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-zinc-900"
+              className="text-brand-primary group-hover:scale-110 transition-transform"
             >
-              <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-              <path d="M12 12v9" />
-              <path d="m16 16-4-4-4 4" />
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
-            <label className="cursor-pointer text-zinc-900 hover:text-zinc-700 transition-colors underline text-sm font-medium">
-              Importar Currículo
-              <input
-                type="file"
-                accept="application/pdf"
-                className="hidden"
-                onChange={handleFileChange}
-              />
-            </label>
-          </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold text-primary">Selecionar arquivo</span>
+              <span className="text-xs text-secondary">PDF até 2MB</span>
+            </div>
+            <input
+              type="file"
+              accept="application/pdf"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </label>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          {message && <p className="text-sm text-green-600">{message}</p>}
+          {error && (
+            <div className="p-3 bg-status-hot/10 border border-status-hot/20 rounded-md w-full">
+              <p className="text-sm text-status-hot font-medium">{error}</p>
+            </div>
+          )}
+          
+          {message && (
+            <div className="p-3 bg-brand-action/10 border border-brand-action/20 rounded-md w-full">
+              <p className="text-sm text-brand-action font-medium">{message}</p>
+            </div>
+          )}
         </div>
-      </main>
-    </div>
+      </Card>
+    </>
   );
 }

@@ -8,6 +8,9 @@ import { setToken } from '@/lib/auth';
 import GoogleLoginButton from '@/components/GoogleLoginButton';
 import GithubLoginButton from '@/components/GithubLoginButton';
 
+import { Card } from '@/components/Card';
+import { Button } from '@/components/Button';
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -40,57 +43,57 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-semibold text-zinc-900 mb-6">Entrar</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-zinc-700">E-mail</label>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-background">
+      <Card className="w-full max-w-sm !p-8">
+        <h1 className="text-display-lg font-bold text-primary tracking-tight mb-8 text-center">Entrar</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-secondary uppercase tracking-wider">E-mail</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="border border-zinc-300 rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-900 transition-colors"
+              className="border border-border-subtle rounded-md px-4 py-2.5 text-sm outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors bg-background"
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-zinc-700">Senha</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-secondary uppercase tracking-wider">Senha</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="border border-zinc-300 rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-900 transition-colors"
+              className="border border-border-subtle rounded-md px-4 py-2.5 text-sm outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors bg-background"
             />
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <button
+          {error && <p className="text-sm text-status-hot font-medium">{error}</p>}
+          <Button
             type="submit"
             disabled={loading}
-            className="bg-zinc-900 text-white py-2 rounded-md text-sm font-medium hover:bg-zinc-700 disabled:opacity-50 transition-colors"
+            className="w-full !py-3"
           >
             {loading ? 'Entrando...' : 'Entrar'}
-          </button>
+          </Button>
         </form>
-        <div className="relative my-4 flex items-center">
-          <div className="flex-1 border-t border-zinc-200" />
-          <span className="mx-3 text-xs text-zinc-400">ou</span>
-          <div className="flex-1 border-t border-zinc-200" />
+        <div className="relative my-6 flex items-center">
+          <div className="flex-1 border-t border-border-subtle" />
+          <span className="mx-3 text-[10px] font-bold text-secondary uppercase tracking-widest">ou</span>
+          <div className="flex-1 border-t border-border-subtle" />
         </div>
-        <GoogleLoginButton />
-        <div className="mt-2">
+        <div className="flex flex-col gap-3">
+          <GoogleLoginButton />
           <GithubLoginButton />
         </div>
-        <div className="mt-4 flex flex-col gap-1 text-sm text-zinc-600">
-          <Link href="/register" className="hover:text-zinc-900 underline">
-            Criar conta
+        <div className="mt-8 flex flex-col gap-2 text-sm text-center">
+          <Link href="/register" className="text-brand-action hover:underline font-medium">
+            Não tem uma conta? Criar conta
           </Link>
-          <Link href="/forgot-password" className="hover:text-zinc-900 underline">
+          <Link href="/forgot-password" class="text-secondary hover:text-primary transition-colors">
             Esqueci minha senha
           </Link>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }
