@@ -35,10 +35,11 @@ class Recommendation(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    job_id = Column(Integer, ForeignKey("jobs.id"))
+    job_id = Column(Integer, ForeignKey("jobs.id", ondelete="CASCADE"))
     match_score = Column(Float)
     status = Column(String, default="pending")  # pending, applied, rejected
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
     user = relationship("User")
     job = relationship("Job")

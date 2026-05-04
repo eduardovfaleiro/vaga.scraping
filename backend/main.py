@@ -5,6 +5,7 @@ from slowapi.errors import RateLimitExceeded
 from dotenv import load_dotenv
 import asyncio
 from services.outbox_worker import run_outbox_worker
+from services.cleanup_worker import run_cleanup_worker
 from routers import auth, users, sync
 from limiter import limiter
 
@@ -31,6 +32,7 @@ app.include_router(sync.router)
 @app.on_event("startup")
 async def startup_event():
     asyncio.create_task(run_outbox_worker())
+    asyncio.create_task(run_cleanup_worker())
 
 
 @app.get("/")

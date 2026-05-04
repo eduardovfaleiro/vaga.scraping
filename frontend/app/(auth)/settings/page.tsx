@@ -132,9 +132,9 @@ export default function SettingsPage() {
             <Link href="/dashboard" className="text-zinc-600 hover:text-zinc-900">
               Recomendações
             </Link>
-            <Link href="/resume" className="text-zinc-600 hover:text-zinc-900">
+            {/* <Link href="/resume" className="text-zinc-600 hover:text-zinc-900">
               Meu currículo
-            </Link>
+            </Link> */}
           </div>
         </div>
       </nav>

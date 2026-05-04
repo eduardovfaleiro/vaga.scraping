@@ -54,13 +54,13 @@ export function RecommendationCard({
             onClick={() => onReject?.(id)}
             className="flex-1 text-sm bg-white text-zinc-900 border border-zinc-900 py-1.5 rounded hover:bg-zinc-100 transition-colors cursor-pointer"
           >
-            Rejeitar
+            Ignorar
           </button>
         </div>
       )}
       {status !== 'pending' && (
         <span className="self-start text-xs bg-zinc-100 text-zinc-700 px-2 py-0.5 rounded">
-          {status === 'applied' ? 'Aplicada' : 'Rejeitada'}
+          {status === 'applied' ? 'Aplicada' : 'Ignorada'}
         </span>
       )}
     </div>
