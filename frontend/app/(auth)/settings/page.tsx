@@ -7,6 +7,7 @@ import { clearToken } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { SkillsInput } from '@/components/SkillsInput';
+import { formatPhone } from '@/lib/utils';
 
 interface UserData {
   id: string;
@@ -150,7 +151,7 @@ export default function SettingsPage() {
               <Row label="Nome" value={user.name} />
               <Row label="E-mail" value={user.email} />
               <Row label="Cargo" value={user.title} />
-              <Row label="Telefone" value={user.phone ?? '—'} />
+              <Row label="Telefone" value={formatPhone(user.phone)} />
               <Row label="Match mínimo" value={`${user.match_threshold}%`} />
               <div className="flex flex-col gap-1">
                 <span className="text-xs font-medium text-zinc-500 uppercase tracking-wide">
@@ -241,7 +242,7 @@ export default function SettingsPage() {
                   type="text"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  placeholder="+55 11 99999-9999"
+                  placeholder="(11) 99999-9999"
                   className="w-full text-sm border border-zinc-300 rounded-md px-3 py-2 outline-none focus:border-zinc-900 transition-colors"
                 />
               </Field>

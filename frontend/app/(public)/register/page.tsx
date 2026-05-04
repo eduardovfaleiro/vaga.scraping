@@ -118,6 +118,7 @@ export default function RegisterPage() {
               type="tel"
               value={form.phone}
               onChange={(e) => setField('phone', e.target.value)}
+              placeholder="(11) 99999-9999"
               className="border border-zinc-300 rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-900 transition-colors"
             />
           </div>
