@@ -26,5 +26,3 @@ scripts/.venv/
 /aws
 *.zip
 .venv
-*.md
-agents/
