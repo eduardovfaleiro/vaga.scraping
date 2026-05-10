@@ -34,19 +34,18 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             <path d="m22 2-7 20-4-9-9-4Z" />
             <path d="M22 2 11 13" />
           </svg>
-          <span className="font-semibold text-brand-primary text-xl tracking-tight">Vagazap</span>
+          <span className="font-semibold text-brand-primary text-xl tracking-tight">VagaPipe</span>
         </div>
-        
+
         <nav className="flex-1 px-4 space-y-1">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                pathname === item.href
+              className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${pathname === item.href
                   ? 'bg-hover text-primary'
                   : 'text-secondary hover:bg-hover hover:text-primary'
-              }`}
+                }`}
             >
               {item.label}
             </Link>
